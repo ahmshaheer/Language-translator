@@ -24,8 +24,6 @@ const App = () => {
       } catch (error) {
         console.error(error);
       }
-
-
     }
 
     setTimeout(multipleLanguages, 1000); // run it, run it
@@ -36,7 +34,7 @@ const App = () => {
     setSelectedLanguage(event.target.value);
   };
 
-  const tranlatingData = async (textValue) => {
+  const tranlatingData = async (textValue, selectedLanguage2) => {
     const url = 'https://text-translator2.p.rapidapi.com/translate';
 
     const options = {
@@ -48,17 +46,16 @@ const App = () => {
       },
       body: new URLSearchParams({
         source_language: 'en',
-        target_language: 'ur',
+        target_language: selectedLanguage2,
         text: textValue
       })
     };
 
     try {
       const response1 = await fetch(url, options);
-
       const result1 = await response1.json();
-
       setShowAfterTranslation(result1.data.translatedText)
+
     } catch (error) {
       console.error(error);
     }
@@ -67,18 +64,18 @@ const App = () => {
 
   return (
     <div>
+
+      <input value={text} name='inputingText' onChange={(e) => setText(e.target.value)} />
+      <button onClick={() => tranlatingData(text, selectedLanguage)}> Submit </button>
+
       <select value={selectedLanguage} onChange={handleLanguageChange}>
         <option>Select a language</option>
         {multipleLanguagesArray.map((language) => (
           <option key={language.code} value={language.code}>
-            {language.name}
+            {language.code} {language.name}
           </option>
         ))}
       </select>
-
-      <input value={text} name='inputingText' onChange={(e) => setText(e.target.value)} />
-      <button onClick={() => tranlatingData(text)}> Submit </button>
-
 
 
       {showAfterTranslation}
