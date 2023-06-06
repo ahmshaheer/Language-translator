@@ -5,7 +5,8 @@ const App = () => {
   const [text, setText] = useState('')
   const [showAfterTranslation, setShowAfterTranslation] = useState('')
   const [multipleLanguagesArray, setMultipleLanguagesArray] = useState([])
-  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedTargetedLanguage, setSelectedTargetedLanguage] = useState('');
+  const [selectedSourcedLanguage, setSelectedSourcedLanguage] = useState('');
 
   useEffect(() => {
     const multipleLanguages = async () => {
@@ -30,11 +31,15 @@ const App = () => {
   }, []);
 
 
-  const handleLanguageChange = (event) => {
-    setSelectedLanguage(event.target.value);
+  const handleLanguageChangeSourced = (event) => {
+    setSelectedSourcedLanguage(event.target.value);
   };
 
-  const tranlatingData = async (textValue, selectedLanguage2) => {
+  const handleLanguageChangeTargeted = (event) => {
+    setSelectedTargetedLanguage(event.target.value);
+  };
+
+  const tranlatingData = async (textValue, selectedTargetedLanguage1, selectedTargetedLanguage2) => {
     const url = 'https://text-translator2.p.rapidapi.com/translate';
 
     const options = {
@@ -45,8 +50,8 @@ const App = () => {
         'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
       },
       body: new URLSearchParams({
-        source_language: 'en',
-        target_language: selectedLanguage2,
+        source_language: selectedTargetedLanguage1,
+        target_language: selectedTargetedLanguage2,
         text: textValue
       })
     };
@@ -66,13 +71,23 @@ const App = () => {
     <div>
 
       <input value={text} name='inputingText' onChange={(e) => setText(e.target.value)} />
-      <button onClick={() => tranlatingData(text, selectedLanguage)}> Submit </button>
+      <button onClick={() => tranlatingData(text, selectedSourcedLanguage, selectedTargetedLanguage)}> Submit </button>
 
-      <select value={selectedLanguage} onChange={handleLanguageChange}>
-        <option>Select a language</option>
+      <select value={selectedSourcedLanguage} onChange={handleLanguageChangeSourced}>
+        <option>Select a Sourced language</option>
         {multipleLanguagesArray.map((language) => (
           <option key={language.code} value={language.code}>
-            {language.code} {language.name}
+            {language.name}
+          </option>
+        ))}
+      </select>
+
+
+      <select value={selectedTargetedLanguage} onChange={handleLanguageChangeTargeted}>
+        <option>Select a Targeted language</option>
+        {multipleLanguagesArray.map((language) => (
+          <option key={language.code} value={language.code}>
+            {language.name}
           </option>
         ))}
       </select>
