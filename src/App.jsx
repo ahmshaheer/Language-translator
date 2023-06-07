@@ -1,6 +1,6 @@
-// import React from 'react';
-
 import { useState, useEffect } from "react";
+import './App.css'
+
 const App = () => {
   const [text, setText] = useState('')
   const [showAfterTranslation, setShowAfterTranslation] = useState('')
@@ -68,32 +68,38 @@ const App = () => {
 
 
   return (
-    <div>
+    <div className="container">
+      <div className="language-select">
+        <select value={selectedSourcedLanguage} onChange={handleLanguageChangeSourced}>
+          <option>Select a Sourced language</option>
+          {multipleLanguagesArray.map((language) => (
+            <option key={language.code} value={language.code}>
+              {language.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <input value={text} name='inputingText' onChange={(e) => setText(e.target.value)} />
-      <button onClick={() => tranlatingData(text, selectedSourcedLanguage, selectedTargetedLanguage)}> Submit </button>
+      <div className="input-container">
+        <input value={text} name='inputingText' onChange={(e) => setText(e.target.value)} size="50" />
+        <button onClick={() => tranlatingData(text, selectedSourcedLanguage, selectedTargetedLanguage)}> Submit </button>
+      </div>
 
-      <select value={selectedSourcedLanguage} onChange={handleLanguageChangeSourced}>
-        <option>Select a Sourced language</option>
-        {multipleLanguagesArray.map((language) => (
-          <option key={language.code} value={language.code}>
-            {language.name}
-          </option>
-        ))}
-      </select>
-
-
-      <select value={selectedTargetedLanguage} onChange={handleLanguageChangeTargeted}>
-        <option>Select a Targeted language</option>
-        {multipleLanguagesArray.map((language) => (
-          <option key={language.code} value={language.code}>
-            {language.name}
-          </option>
-        ))}
-      </select>
+      <div className="language-select selectedTargetedLanguage">
+        <select value={selectedTargetedLanguage} onChange={handleLanguageChangeTargeted}>
+          <option>Select a Targeted language</option>
+          {multipleLanguagesArray.map((language) => (
+            <option key={language.code} value={language.code}>
+              {language.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
 
-      {showAfterTranslation}
+      <div className="translation-result">
+        {showAfterTranslation}
+      </div>
     </div>
   );
 }
