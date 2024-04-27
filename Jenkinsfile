@@ -11,9 +11,9 @@ pipeline {
     stage('Install npm') {
       steps {
         script {
-          // Execute shell command to install npm
-          sh 'curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -'
-          sh 'sudo apt-get install -y nodejs'
+          // Update package index and install Node.js and npm using apk
+          sh 'apk update'
+          sh 'apk add nodejs npm'
 
           // Verify npm installation
           sh 'npm --version'
