@@ -8,10 +8,16 @@ pipeline {
         sh 'node --version'
       }
     }
-     stage('Build') {
+    stage('Install npm') {
       steps {
-        sh 'npm install'
-        sh 'npm run build' // Assuming you have a build script defined in your package.json
+        script {
+          // Execute shell command to install npm
+          sh 'curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -'
+          sh 'sudo apt-get install -y nodejs'
+
+          // Verify npm installation
+          sh 'npm --version'
+        }
       }
     }
   }
