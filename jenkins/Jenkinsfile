@@ -1,46 +1,29 @@
-// pipeline {
-//   agent {
-//     docker { image 'node:16-alpine' }
-//     args '-p 3000:3000' // Expose port 3000 for running tests
-//   }
-//   stages {
-//     stage('NodeVersion') {
-//       steps {
-//         sh 'node --version'
-//       }
-//     }
-//     stage('Test') {
-//       steps {
-//         sh 'npm test'
-//       }
-//     }
-//   }
-// }
-
 pipeline {
     agent {
         docker {
-      image 'node:16-alpine'
-      args '-p 3000:3000' // Expose port 3000 for running tests
+      image 'node:lts-buster-slim'
+      args '-p 3000:3000'
         }
     }
+    environment {
+        CI = 'true'
+    }
     stages {
-        stage('Checkout') {
+        stage('Build') {
       steps {
-        // Checkout your code repository
-        git 'https://github.com/ahmshaheer/Language-translator.git'
-      }
-        }
-        stage('Install dependencies') {
-      steps {
-        // Install npm dependencies
         sh 'npm install'
       }
         }
-        stage('Run tests') {
+        stage('Test') {
       steps {
-        // Run your Jest tests
-        sh 'npm test'
+        sh './jenkins/scripts/test.sh'
+      }
+        }
+        stage('Deliver') {
+      steps {
+        sh './jenkins/scripts/deliver.sh'
+        input message: 'Finished using the web site? (Click "Proceed" to continue)'
+        sh './jenkins/scripts/kill.sh'
       }
         }
     }
