@@ -2,7 +2,6 @@ pipeline {
   agent {
     docker {
       image 'node:16-alpine'
-      user 'root' // Specify the user for the Docker container
     }
   }
   stages {
@@ -15,8 +14,8 @@ pipeline {
       steps {
         script {
           // Update package index and install Node.js and npm using apk
-          sh 'apk update'
-          sh 'apk add nodejs npm'
+          sh 'sudo apk update'
+          sh 'sudo apk add nodejs npm'
 
           // Verify npm installation
           sh 'npm --version'
