@@ -1,6 +1,9 @@
 pipeline {
   agent {
-    docker { image 'node:16-alpine' }
+    docker {
+      image 'node:16-alpine'
+      user 'root' // Specify the user for the Docker container
+    }
   }
   stages {
     stage('Test') {
