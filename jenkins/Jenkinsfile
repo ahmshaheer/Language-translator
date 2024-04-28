@@ -1,27 +1,14 @@
 pipeline {
     agent any
-
     stages {
-        stage('Install Node.js') {
+        stage('Build') {
       steps {
-        script {
-          // Install NVM (Node Version Manager)
-          sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
-
-          // Activate NVM
-          sh 'source ~/.bashrc'
-
-          // Install Node.js and npm using NVM
-          sh 'nvm install 14'
-          sh 'nvm use 14'
-
-          // Verify Node.js and npm installation
-          sh 'node -v'
-          sh 'npm -v'
-
-          // Install project dependencies
-          sh 'npm install'
+        sh 'npm install'
+      }
         }
+        stage('Test') {
+      steps {
+        sh './jenkins/scripts/test.sh'
       }
         }
     }
